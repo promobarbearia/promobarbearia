@@ -463,3 +463,118 @@ h2 {
     height: calc(100% + 120px); /* Aumenta a altura para compensar o corte */
     pointer-events: none; /* Impede que o usuário clique e apareçam botões */
 }
+
+/* Container do Carrossel */
+.reviews-wrapper {
+    overflow: hidden;
+    width: 100%;
+    padding: 20px 0;
+}
+
+.reviews-track {
+    display: flex;
+    gap: 20px;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    padding-bottom: 30px;
+    scrollbar-width: none; /* Esconde scroll no Firefox */
+}
+
+.reviews-track::-webkit-scrollbar {
+    display: none; /* Esconde scroll no Chrome/Safari */
+}
+
+/* Card Individual Estilo Imagem Superior */
+.review-card {
+    min-width: 300px; /* Largura no mobile */
+    background: var(--bg-card);
+    border-radius: 20px;
+    overflow: hidden;
+    flex-shrink: 0;
+    text-align: center;
+    border: 1px solid rgba(255,255,255,0.05);
+    scroll-snap-align: center; /* Trava no centro no mobile */
+}
+
+.review-img {
+    width: 100%;
+    height: 250px;
+    overflow: hidden;
+}
+
+.review-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: 0.5s;
+}
+
+.review-card:hover .review-img img {
+    transform: scale(1.1);
+}
+
+.review-card .stars {
+    color: var(--gold);
+    margin-top: 20px;
+}
+
+.review-card p {
+    padding: 0 25px;
+    font-size: 0.95rem;
+    color: var(--text-dim);
+    margin: 15px 0;
+    font-style: italic;
+}
+
+.review-card h5 {
+    font-size: 1.2rem;
+    font-weight: 700;
+}
+
+.service-done {
+    display: block;
+    font-size: 0.75rem;
+    color: var(--gold);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 25px;
+}
+
+/* No Desktop: Grid normal ou Carrossel Manual */
+@media (min-width: 1024px) {
+    .reviews-track {
+        justify-content: center;
+        overflow: visible;
+    }
+    .review-card {
+        min-width: 320px;
+        flex: 1;
+        max-width: 350px;
+    }
+}
+@media (max-width: 768px) {
+    /* Ajuste no container para permitir o transbordo correto */
+    .reviews-wrapper {
+        margin: 0 -5%; /* "Puxa" o container para as bordas da tela */
+        width: 110%; 
+    }
+
+    .reviews-track {
+        scroll-snap-type: x mandatory;
+        padding-left: 8%; /* Espaço antes do primeiro card */
+        padding-right: 8%;
+        gap: 15px; /* Espaçamento entre os cards */
+    }
+
+    .review-card {
+        /* O segredo: largura de 80% da tela para o próximo card aparecer um pouco */
+        min-width: 80vw; 
+        max-width: 80vw;
+        scroll-snap-align: center;
+    }
+
+    .review-img {
+        height: 200px; /* Reduz um pouco a imagem no mobile para não ficar alto demais */
+    }
+}
+
