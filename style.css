@@ -3,7 +3,7 @@
    ============================================================ */
 :root {
     --gold: #247fff;
-    --gold-hover: #e0b973;
+    --gold-hover: #1a66cc;
     --bg: #0a0a0a;
     --bg-card: #121212;
     --text: #ffffff;
@@ -18,15 +18,23 @@
     font-family: 'Inter', sans-serif;
 }
 
-html {
+html, body {
+    overflow-x: hidden; /* Evita o espaço branco na direita */
+    width: 100%;
+    position: relative;
     scroll-behavior: smooth;
-    overflow-x: hidden;
 }
 
 body {
     background-color: var(--bg);
     color: var(--text);
     line-height: 1.6;
+}
+
+/* Previne que elementos em animação quebrem o layout lateral */
+section, header, footer {
+    overflow: hidden;
+    width: 100%;
 }
 
 .container {
@@ -41,18 +49,20 @@ h2 {
 }
 
 /* ============================================================
-   NAVBAR (FIXA E TRANSPARENTE)
+   NAVBAR
    ============================================================ */
 .navbar {
     position: fixed;
     width: 100%;
     top: 0;
+    left: 0;
     padding: 25px 8%;
     display: flex;
     justify-content: space-between;
     align-items: center;
     z-index: 1000;
     transition: var(--transition);
+    box-sizing: border-box;
 }
 
 .navbar.scrolled {
@@ -66,6 +76,7 @@ h2 {
     font-size: 1.6rem;
     font-weight: 900;
     letter-spacing: -1px;
+    white-space: nowrap;
 }
 
 .logo span {
@@ -98,11 +109,10 @@ h2 {
     gap: 20px;
 }
 
-/* BOTÃO NAV DESKTOP */
 .nav-btn {
     padding: 12px 24px;
     background: var(--gold);
-    color: #000;
+    color: #fff;
     border: none;
     border-radius: 4px;
     font-weight: 800;
@@ -112,17 +122,12 @@ h2 {
     transition: 0.3s;
 }
 
-.nav-btn:hover {
-    background: var(--gold-hover);
-    transform: translateY(-2px);
-}
-
-/* MENU HAMBURGUER (MOBILE) */
 .menu-toggle {
     display: none;
     flex-direction: column;
     gap: 6px;
     cursor: pointer;
+    z-index: 1001;
 }
 
 .menu-toggle span {
@@ -141,7 +146,7 @@ h2 {
     align-items: center;
     justify-content: center;
     text-align: center;
-    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.9)), 
+    background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.9)), 
                 url('https://images.unsplash.com/photo-1512690196236-4bab3b702515?q=80&w=2000') center/cover;
     padding: 0 20px;
 }
@@ -171,11 +176,8 @@ h2 {
     justify-content: center;
 }
 
-.reveal.active { opacity: 1; transform: translateY(0); }
-
-
 /* ============================================================
-   BOTÕES GERAIS E FLUTUANTE
+   BOTÕES E ESTADOS REVEAL
    ============================================================ */
 .btn {
     padding: 18px 36px;
@@ -190,15 +192,10 @@ h2 {
     border: none;
 }
 
-.primary { background: var(--gold); color: #000; }
-.primary:hover { background: var(--gold-hover); transform: translateY(-5px); box-shadow: 0 10px 25px rgba(197, 160, 89, 0.3); }
-
+.primary { background: var(--gold); color: #fff; }
 .outline { background: transparent; border: 1px solid var(--gold); color: var(--gold); }
-.outline:hover { background: var(--gold); color: #000; }
-
 .full { width: 100%; text-align: center; }
 
-/* Botão Fixo no Mobile */
 .mobile-sticky-btn {
     position: fixed;
     bottom: 25px;
@@ -208,8 +205,23 @@ h2 {
     display: none;
 }
 
+/* Animações de Scroll */
+.reveal {
+    opacity: 0;
+    will-change: transform, opacity;
+}
+
+.reveal-left { transform: translateX(-50px); }
+.reveal-right { transform: translateX(50px); }
+
+.reveal.active {
+    opacity: 1;
+    transform: translate(0, 0) !important;
+    transition: 2s cubic-bezier(0.17, 0.85, 0.43, 1.01);
+}
+
 /* ============================================================
-   SEÇÃO SOBRE E BADGES
+   SEÇÕES (SOBRE, GALERIA, VÍDEO)
    ============================================================ */
 .about-grid {
     display: grid;
@@ -232,38 +244,91 @@ h2 {
     letter-spacing: 2px;
 }
 
+.gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 15px;
+    margin-top: 40px;
+}
+
+.gallery-item {
+    height: 300px;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.gallery-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.video-container {
+    max-width: 1000px;
+    margin: 40px auto;
+    border-radius: 20px;
+    overflow: hidden;
+}
+
 /* ============================================================
-   CARDS DE PLANOS E FEEDBACKS
+   PLANOS
    ============================================================ */
-.plans-grid, .reviews-grid {
+.plans-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 30px;
     margin-top: 50px;
 }
 
-.card, .review-card {
+.card {
     background: var(--bg-card);
     padding: 40px;
     border-radius: 12px;
     border: 1px solid rgba(255,255,255,0.05);
     transition: 0.4s;
+    position: relative;
 }
 
-.card:hover { transform: translateY(-10px); border-color: var(--gold); }
-
-.card.destaque { border: 2px solid var(--gold); position: relative; transform: scale(1.05); }
-
-.tag {
-    position: absolute; top: -15px; left: 50%; transform: translateX(-50%);
-    background: var(--gold); color: #000; padding: 5px 15px; font-weight: 900; font-size: 0.7rem;
-}
+.card.destaque { border: 2px solid var(--gold); }
 
 .price { font-size: 3rem; font-weight: 900; color: var(--gold); margin: 20px 0; }
 .price span { font-size: 1.2rem; color: var(--text); }
 
 /* ============================================================
-   LOCALIZAÇÃO (TEXTO + MAPA DARK)
+   CARROSSEL DE REVIEWS (FIXED)
+   ============================================================ */
+.reviews-wrapper {
+    overflow: hidden;
+    width: 100%;
+    position: relative;
+}
+
+.reviews-track {
+    display: flex;
+    gap: 20px;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    padding: 20px 0 40px;
+    scrollbar-width: none;
+}
+
+.reviews-track::-webkit-scrollbar { display: none; }
+
+.review-card {
+    min-width: 300px;
+    background: var(--bg-card);
+    border-radius: 20px;
+    overflow: hidden;
+    flex-shrink: 0;
+    text-align: center;
+    border: 1px solid rgba(255,255,255,0.05);
+}
+
+.review-img { height: 250px; width: 100%; }
+.review-img img { width: 100%; height: 100%; object-fit: cover; }
+
+/* ============================================================
+   LOCALIZAÇÃO
    ============================================================ */
 .location-wrapper {
     display: grid;
@@ -271,22 +336,13 @@ h2 {
     background: var(--bg-card);
     border-radius: 20px;
     overflow: hidden;
-    border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .location-content { padding: 60px; }
-
-.contact-item { display: flex; gap: 15px; margin-bottom: 25px; }
-.contact-item .icon { color: var(--gold); font-size: 1.2rem; }
-
-.location-map {
-    width: 100%;
-    min-height: 450px;
-    filter: grayscale(1) invert(0.9) contrast(1.2); /* Mapa Dark Mode */
-}
+.location-map { min-height: 450px; filter: grayscale(1) invert(0.9); }
 
 /* ============================================================
-   FOOTER LUXURY
+   FOOTER
    ============================================================ */
 .footer {
     background: #050505;
@@ -301,24 +357,150 @@ h2 {
     padding-bottom: 60px;
 }
 
-.footer-info-main p { color: var(--text-dim); margin: 20px 0; max-width: 350px; }
-
 .footer-grid-links { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; }
-
-.footer-col h4 { color: #fff; text-transform: uppercase; font-size: 0.85rem; margin-bottom: 25px; }
-
-.footer-col ul { list-style: none; }
-.footer-col ul li, .footer-col ul a {
-    color: var(--text-dim); text-decoration: none; margin-bottom: 12px; display: block; transition: 0.3s;
-}
-
-.footer-col ul a:hover { color: var(--gold); padding-left: 5px; }
 
 .footer-bottom {
     background: #000;
+    padding: 25px 8%;
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.75rem;
+    color: #444;
+}
+
+/* ============================================================
+   RESPONSIVIDADE (Ajustes Finais Mobile)
+   ============================================================ */
+@media (max-width: 1024px) {
+    .about-grid, .location-wrapper, .footer-container { grid-template-columns: 1fr; }
+    .footer-grid-links { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 768px) {
+    .container { padding: 80px 5%; }
+    
+    .navbar { padding: 15px 5%; }
+    .desktop-only { display: none; }
+    .mobile-sticky-btn { display: block; }
+
+    .menu-toggle { display: flex; }
+    
+    .nav-links {
+        position: fixed;
+        top: 0;
+        right: -100%;
+        height: 100vh;
+        width: 80%;
+        background: var(--bg);
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        transition: 0.5s;
+        z-index: 999;
+        box-shadow: -10px 0 30px rgba(0,0,0,0.5);
+    }
+
+    .nav-links.active { right: 0; }
+
+    .hero h1 { font-size: 2.6rem; }
+
+    /* Ajuste para o carrossel não quebrar a largura da tela */
+    .reviews-track {
+        padding: 0 5%;
+        gap: 15px;
+    }
+
+    .review-card {
+        min-width: 85vw;
+        max-width: 85vw;
+    }
+
+    .footer-grid-links { grid-template-columns: 1fr; text-align: center; }
+    .footer-bottom { flex-direction: column; text-align: center; gap: 10px; }
+}
+
+/* ============================================================
+   FOOTER (ESTILO LUXURY RECUPERADO)
+   ============================================================ */
+.footer {
+    background: #050505;
+    padding: 80px 0 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.footer-container {
+    display: grid;
+    grid-template-columns: 1.2fr 2.8fr; /* Mantém a proporção logo vs links */
+    gap: 60px;
+    padding-bottom: 60px;
+}
+
+.footer-info-main p { 
+    color: var(--text-dim); 
+    margin: 20px 0; 
+    max-width: 350px; 
+    font-size: 0.9rem;
+}
+
+/* Ícones Sociais */
+.footer-social-icons {
+    display: flex;
+    gap: 15px;
+}
+
+.footer-social-icons a {
+    text-decoration: none;
+    color: var(--gold);
+    font-weight: 900;
+    font-size: 0.8rem;
+    border: 1px solid rgba(36, 127, 255, 0.3);
+    padding: 8px 12px;
+    border-radius: 4px;
+    transition: 0.3s;
+}
+
+.footer-social-icons a:hover {
+    background: var(--gold);
+    color: #000;
+}
+
+/* Grid de Links */
+.footer-grid-links { 
+    display: grid; 
+    grid-template-columns: repeat(3, 1fr); 
+    gap: 30px; 
+}
+
+.footer-col h4 { 
+    color: #fff; 
+    text-transform: uppercase; 
+    font-size: 0.85rem; 
+    margin-bottom: 25px; 
+    letter-spacing: 1px;
+}
+
+.footer-col ul { list-style: none; }
+
+.footer-col ul li, 
+.footer-col ul a {
+    color: var(--text-dim); 
+    text-decoration: none; 
+    margin-bottom: 12px; 
+    display: block; 
+    transition: 0.3s;
+    font-size: 0.9rem;
+}
+
+.footer-col ul a:hover { 
+    color: var(--gold); 
+    padding-left: 5px; 
+}
+
+/* Faixa Final */
+.footer-bottom {
+    background: #000;
     padding: 25px 0;
-    border-top: 1px solid rgba(255,255,255,0.03);
-    text-align: center;
+    border-top: 1px solid rgba(255, 255, 255, 0.03);
 }
 
 .footer-bottom .container-small {
@@ -330,251 +512,33 @@ h2 {
 }
 
 /* ============================================================
-   RESPONSIVIDADE (Ajustes Finais)
+   RESPONSIVIDADE DO FOOTER
    ============================================================ */
 @media (max-width: 1024px) {
-    .about-grid, .location-wrapper, .footer-container { grid-template-columns: 1fr; }
-    .location-content { padding: 40px; }
-    .location-map { min-height: 350px; }
-}
-
-@media (max-width: 768px) {
-    .container { padding: 80px 5%; }
-    
-    .desktop-only { display: none; }
-    .mobile-sticky-btn { display: block; }
-
-    .menu-toggle { display: flex; }
-    
-    .nav-links {
-        position: fixed; top: 0; right: -100%; height: 100vh; width: 80%;
-        background: var(--bg); flex-direction: column; justify-content: center;
-        align-items: center; transition: 0.6s; z-index: 999;
-        box-shadow: -10px 0 30px rgba(0,0,0,0.5);
+    .footer-container { 
+        grid-template-columns: 1fr; 
+        text-align: center;
+        gap: 40px;
     }
 
-    .nav-links.active { right: 0; }
+    .footer-info-main p { 
+        margin: 20px auto; 
+    }
 
-    .hero h1 { font-size: 2.8rem; }
-    .hero-btns { flex-direction: column; }
-
-    .footer-grid-links { grid-template-columns: 1fr; text-align: center; }
-    .footer-info-main { text-align: center; }
-    .footer-info-main p { margin: 20px auto; }
-    .footer-bottom .container-small { flex-direction: column; gap: 10px; }
-
-    .card.destaque { transform: scale(1); }
-}
-
-/* Animações de Scroll */
-.reveal { opacity: 0; transform: translateY(30px); transition: 1s ease; }
-.reveal.active { opacity: 1; transform: translateY(0); }
-
-
-
-/* ============================================================
-   GALERIA DE FOTOS (STYLE GALLERY)
-   ============================================================ */
-.gallery-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 15px;
-    margin-top: 40px;
-}
-
-.gallery-item {
-    position: relative;
-    overflow: hidden;
-    border-radius: 10px;
-    height: 300px;
-}
-
-.gallery-item img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: var(--transition);
-}
-
-.gallery-item:hover img {
-    transform: scale(1.1);
-    filter: brightness(0.7);
-}
-
-/* ============================================================
-   SEÇÃO DE VÍDEO (EXPERIÊNCIA)
-   ============================================================ */
-.video-experience {
-    background: #000;
-    padding: 100px 8%;
-    text-align: center;
-}
-
-.video-container {
-    max-width: 1000px;
-    margin: 40px auto 0;
-    position: relative;
-    border-radius: 20px;
-    overflow: hidden;
-    box-shadow: 0 0 50px rgba(116, 104, 248, 0.2);
-}
-
-.video-container video {
-    width: 100%;
-    display: block;
-}
-
-/* ============================================================
-   SERVIÇOS AVULSOS (DIFERENCIAIS)
-   ============================================================ */
-.services-list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    justify-content: center;
-    margin-top: 30px;
-}
-
-.service-tag {
-    background: rgba(255,255,255,0.05);
-    padding: 15px 30px;
-    border-radius: 50px;
-    border: 1px solid rgba(116, 104, 248, 0.3);
-    font-size: 0.9rem;
-    font-weight: 600;
-}
-
-.video-container {
-    position: relative;
-    width: 100%;
-    max-width: 1000px;
-    margin: 40px auto;
-    height: 500px; /* Altura desejada */
-    overflow: hidden; /* Isso corta o que estiver fora */
-    border-radius: 20px;
-}
-
-.video-container iframe {
-    position: absolute;
-    top: -60px; /* Joga o título para cima, para fora da área visível */
-    left: 50%;
-    transform: translateX(-50%);
-    width: 100%;
-    height: calc(100% + 120px); /* Aumenta a altura para compensar o corte */
-    pointer-events: none; /* Impede que o usuário clique e apareçam botões */
-}
-
-/* Container do Carrossel */
-.reviews-wrapper {
-    overflow: hidden;
-    width: 100%;
-    padding: 20px 0;
-}
-
-.reviews-track {
-    display: flex;
-    gap: 20px;
-    overflow-x: auto;
-    scroll-behavior: smooth;
-    padding-bottom: 30px;
-    scrollbar-width: none; /* Esconde scroll no Firefox */
-}
-
-.reviews-track::-webkit-scrollbar {
-    display: none; /* Esconde scroll no Chrome/Safari */
-}
-
-/* Card Individual Estilo Imagem Superior */
-.review-card {
-    min-width: 300px; /* Largura no mobile */
-    background: var(--bg-card);
-    border-radius: 20px;
-    overflow: hidden;
-    flex-shrink: 0;
-    text-align: center;
-    border: 1px solid rgba(255,255,255,0.05);
-    scroll-snap-align: center; /* Trava no centro no mobile */
-}
-
-.review-img {
-    width: 100%;
-    height: 250px;
-    overflow: hidden;
-}
-
-.review-img img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: 0.5s;
-}
-
-.review-card:hover .review-img img {
-    transform: scale(1.1);
-}
-
-.review-card .stars {
-    color: var(--gold);
-    margin-top: 20px;
-}
-
-.review-card p {
-    padding: 0 25px;
-    font-size: 0.95rem;
-    color: var(--text-dim);
-    margin: 15px 0;
-    font-style: italic;
-}
-
-.review-card h5 {
-    font-size: 1.2rem;
-    font-weight: 700;
-}
-
-.service-done {
-    display: block;
-    font-size: 0.75rem;
-    color: var(--gold);
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    margin-bottom: 25px;
-}
-
-/* No Desktop: Grid normal ou Carrossel Manual */
-@media (min-width: 1024px) {
-    .reviews-track {
+    .footer-social-icons {
         justify-content: center;
-        overflow: visible;
-    }
-    .review-card {
-        min-width: 320px;
-        flex: 1;
-        max-width: 350px;
     }
 }
+
 @media (max-width: 768px) {
-    /* Ajuste no container para permitir o transbordo correto */
-    .reviews-wrapper {
-        margin: 0 -5%; /* "Puxa" o container para as bordas da tela */
-        width: 110%; 
+    .footer-grid-links { 
+        grid-template-columns: 1fr; 
+        gap: 40px;
     }
 
-    .reviews-track {
-        scroll-snap-type: x mandatory;
-        padding-left: 8%; /* Espaço antes do primeiro card */
-        padding-right: 8%;
-        gap: 15px; /* Espaçamento entre os cards */
-    }
-
-    .review-card {
-        /* O segredo: largura de 80% da tela para o próximo card aparecer um pouco */
-        min-width: 80vw; 
-        max-width: 80vw;
-        scroll-snap-align: center;
-    }
-
-    .review-img {
-        height: 200px; /* Reduz um pouco a imagem no mobile para não ficar alto demais */
+    .footer-bottom .container-small {
+        flex-direction: column;
+        gap: 10px;
+        text-align: center;
     }
 }
-

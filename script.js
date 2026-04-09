@@ -18,20 +18,25 @@ menuToggle.addEventListener('click', () => {
 // 3. Scroll Reveal (Animação de Entrada)
 // Aumentei o threshold para 0.15 para a animação não disparar cedo demais
 const observerOptions = {
-    threshold: 0.15,
-    rootMargin: "0px 0px -50px 0px" // Começa a animar um pouco antes de entrar totalmente
+    threshold: 0.15, // Só dispara quando 15% do componente estiver visível
+    rootMargin: "0px 0px -50px 0px" // Faz o elemento esperar "entrar" 50px na tela para surgir
 };
 
 const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
         if (entry.isIntersecting) {
             entry.target.classList.add('active');
-            // Opcional: parar de observar após animar uma vez
-            // observer.unobserve(entry.target);
+            // Se quiser que a animação aconteça TODA VEZ que subir/descer, 
+            // não use o unobserve. Se quiser que anime só uma vez, mantenha:
+            // observer.unobserve(entry.target); 
+        } else {
+            // OPCIONAL: Se quiser que o elemento suma de novo ao subir a página:
+            // entry.target.classList.remove('active');
         }
     });
 }, observerOptions);
 
+// Aplica o observador em todos os elementos com a classe reveal
 document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
 // 4. Navegação Suave e Fechamento de Menu
