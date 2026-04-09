@@ -80,3 +80,36 @@ if (video) {
     }, { threshold: 0.5 });
     videoObserver.observe(video);
 }
+
+const track = document.getElementById('reviews-track');
+let isAutoScrolling = true;
+
+function autoScroll() {
+    if (!isAutoScrolling) return;
+    
+    // Se chegar no fim, volta para o começo
+    if (track.scrollLeft + track.offsetWidth >= track.scrollWidth) {
+        track.scrollTo({ left: 0, behavior: 'smooth' });
+    } else {
+        track.scrollBy({ left: 320, behavior: 'smooth' });
+    }
+}
+
+// Roda a cada 4 segundos
+let scrollInterval = setInterval(autoScroll, 4000);
+
+// Pausa ao interagir (touch ou mouse)
+track.addEventListener('touchstart', () => {
+    isAutoScrolling = false;
+    clearInterval(scrollInterval);
+});
+
+// Retoma após 10 segundos sem interação
+track.addEventListener('touchend', () => {
+    setTimeout(() => {
+        if (!isAutoScrolling) {
+            isAutoScrolling = true;
+            scrollInterval = setInterval(autoScroll, 4000);
+        }
+    }, 10000);
+});
