@@ -694,3 +694,107 @@ h2 {
         height: 220px; /* Imagem mais baixa no mobile */
     }
 }
+
+/* ============================================================
+   SEÇÃO BARBEIROS (TEAM)
+   ============================================================ */
+.team-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 40px;
+    margin-top: 50px;
+}
+
+.team-card {
+    background: var(--bg-card);
+    border-radius: 20px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    transition: var(--transition);
+}
+
+.team-card:hover {
+    transform: translateY(-10px);
+    border-color: var(--gold);
+}
+
+.team-img {
+    height: 350px;
+    position: relative;
+    overflow: hidden;
+}
+
+.team-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: 0.5s;
+}
+
+.team-card:hover .team-img img {
+    transform: scale(1.05);
+}
+
+.team-social {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    background: var(--gold);
+    padding: 5px 15px;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    font-weight: 700;
+}
+
+.team-info {
+    padding: 30px;
+}
+
+.team-info h3 {
+    font-size: 1.5rem;
+    margin-bottom: 5px;
+    color: #fff;
+}
+
+.team-info .specialty {
+    color: var(--gold);
+    font-size: 0.9rem;
+    font-weight: 600;
+    display: block;
+    margin-bottom: 15px;
+    text-transform: uppercase;
+}
+
+.team-info p {
+    font-size: 0.95rem;
+    color: var(--text-dim);
+    font-style: italic;
+    margin-bottom: 20px;
+    line-height: 1.4;
+}
+
+.skills-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    list-style: none;
+}
+
+.skills-tags li {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    color: var(--gold);
+    font-weight: 600;
+}
+
+/* Ajuste Mobile */
+@media (max-width: 768px) {
+    .team-grid {
+        grid-template-columns: 1fr;
+    }
+    .team-img {
+        height: 400px;
+    }
+}
